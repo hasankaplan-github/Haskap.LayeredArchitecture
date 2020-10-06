@@ -1,0 +1,73 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Model", "Model", "{FEC3C818-CBAA-4D6B-A447-134BC0BBE324}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccessLayer", "DataAccessLayer", "{63EAD6D4-35DB-4B18-A89C-DD9BF2D3E222}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Haskap.LayeredArchitecture.Entites", "Haskap.LayeredArchitecture.Entites\Haskap.LayeredArchitecture.Entites.csproj", "{6D0C2E0A-2BD0-4A2D-B2F0-AB764A1F1913}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Haskap.LayeredArchitecture.DbContexts", "Haskap.LayeredArchitecture.DbContexts\Haskap.LayeredArchitecture.DbContexts.csproj", "{CBCB1D47-9C5F-49D2-AC50-F5B66C180F78}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utility", "Utility", "{A4BFD797-D40A-4AC4-ACA1-26DA955F7466}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Haskap.LayeredArchitecture.Utilities", "Haskap.LayeredArchitecture.Utilities\Haskap.LayeredArchitecture.Utilities.csproj", "{F78291BE-3CBC-48B5-9C44-DEB7801F9050}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Haskap.LayeredArchitecture.Repositories", "Haskap.LayeredArchitecture.Repositories\Haskap.LayeredArchitecture.Repositories.csproj", "{59AEC406-84B9-40CE-BD4C-90FAF199847D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{9D1D6525-0033-40DF-9FB7-29AC54D82960}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Haskap.LayeredArchitecture.Core", "Haskap.LayeredArchitecture.Core\Haskap.LayeredArchitecture.Core.csproj", "{B7B36753-1573-4EC7-875E-637AB9220ECB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BussinessLogicLayer", "BussinessLogicLayer", "{621401B8-966C-497E-8AE0-8B17BDC4680F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Haskap.LayeredArchitecture.Services", "Haskap.LayeredArchitecture.Services\Haskap.LayeredArchitecture.Services.csproj", "{4E832936-7ADA-4CC3-A20E-D07D526A2A8A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6D0C2E0A-2BD0-4A2D-B2F0-AB764A1F1913}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D0C2E0A-2BD0-4A2D-B2F0-AB764A1F1913}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D0C2E0A-2BD0-4A2D-B2F0-AB764A1F1913}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D0C2E0A-2BD0-4A2D-B2F0-AB764A1F1913}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBCB1D47-9C5F-49D2-AC50-F5B66C180F78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBCB1D47-9C5F-49D2-AC50-F5B66C180F78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBCB1D47-9C5F-49D2-AC50-F5B66C180F78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBCB1D47-9C5F-49D2-AC50-F5B66C180F78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F78291BE-3CBC-48B5-9C44-DEB7801F9050}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F78291BE-3CBC-48B5-9C44-DEB7801F9050}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F78291BE-3CBC-48B5-9C44-DEB7801F9050}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F78291BE-3CBC-48B5-9C44-DEB7801F9050}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59AEC406-84B9-40CE-BD4C-90FAF199847D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59AEC406-84B9-40CE-BD4C-90FAF199847D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59AEC406-84B9-40CE-BD4C-90FAF199847D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59AEC406-84B9-40CE-BD4C-90FAF199847D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7B36753-1573-4EC7-875E-637AB9220ECB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7B36753-1573-4EC7-875E-637AB9220ECB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7B36753-1573-4EC7-875E-637AB9220ECB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7B36753-1573-4EC7-875E-637AB9220ECB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E832936-7ADA-4CC3-A20E-D07D526A2A8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E832936-7ADA-4CC3-A20E-D07D526A2A8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E832936-7ADA-4CC3-A20E-D07D526A2A8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E832936-7ADA-4CC3-A20E-D07D526A2A8A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6D0C2E0A-2BD0-4A2D-B2F0-AB764A1F1913} = {FEC3C818-CBAA-4D6B-A447-134BC0BBE324}
+		{CBCB1D47-9C5F-49D2-AC50-F5B66C180F78} = {63EAD6D4-35DB-4B18-A89C-DD9BF2D3E222}
+		{F78291BE-3CBC-48B5-9C44-DEB7801F9050} = {A4BFD797-D40A-4AC4-ACA1-26DA955F7466}
+		{59AEC406-84B9-40CE-BD4C-90FAF199847D} = {63EAD6D4-35DB-4B18-A89C-DD9BF2D3E222}
+		{B7B36753-1573-4EC7-875E-637AB9220ECB} = {9D1D6525-0033-40DF-9FB7-29AC54D82960}
+		{4E832936-7ADA-4CC3-A20E-D07D526A2A8A} = {621401B8-966C-497E-8AE0-8B17BDC4680F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4F971748-7755-480A-BBB9-2DC28D657DC9}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Haskap.LayeredArchitecture.Entites\Haskap.LayeredArchitecture.Entites.csproj" />
+    <ProjectReference Include="..\Haskap.LayeredArchitecture.Utilities\Haskap.LayeredArchitecture.Utilities.csproj" />
+  </ItemGroup>
+
+</Project>
