@@ -32,14 +32,14 @@ namespace Haskap.LayeredArchitecture.Core.Repositories
         TEntity GetById(TId id);
         // Get an entity using delegate
         TEntity Get(Expression<Func<TEntity, bool>> where, string includeProperties = "");
-        
+
         // Gets entities using delegate
         IList<TEntity> GetMany(Expression<Func<TEntity, bool>> where, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
-        
+
         //IQueryable<T> GetMany(Expression<Func<T, bool>> where);
         // Gets all entities of type T
         IList<TEntity> GetAll(string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
-        
+
 
 
         bool Exists(Expression<Func<TEntity, bool>> predicate, string includeProperties = "");
@@ -49,9 +49,9 @@ namespace Haskap.LayeredArchitecture.Core.Repositories
 
         Task<IList<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
         Task<PagedList<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where, int pageIndex, int pageSize, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
-       Task<IList<TEntity>> GetAllAsync(string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
+        Task<IList<TEntity>> GetAllAsync(string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
         Task<PagedList<TEntity>> GetAllAsync(int pageIndex, int pageSize, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
-        
+
         Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate, string includeProperties = "");
         int Count(Expression<Func<TEntity, bool>> predicate, string includeProperties = "");
     }
