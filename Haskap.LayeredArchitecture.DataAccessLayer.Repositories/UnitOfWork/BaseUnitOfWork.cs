@@ -1,7 +1,9 @@
 ﻿using Haskap.LayeredArchitecture.Core.Repositories.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 
 namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories.UnitOfWork
@@ -18,6 +20,29 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories.UnitOfWork
 
 
         #region IBaseUnitOfWork Members
+
+        public virtual IDbContextTransaction CurrentTransaction 
+        { 
+            get
+            {
+                return this.dbContext.Database.CurrentTransaction;
+            }
+        }
+
+        public virtual IDbContextTransaction BeginTransaction()
+        {
+            return this.dbContext.Database.BeginTransaction();
+        }
+
+        public virtual void CommitTransaction()
+        {
+            this.dbContext.Database.CommitTransaction();
+        }
+
+        public virtual void RollbackTransaction()
+        {
+            this.dbContext.Database.RollbackTransaction();
+        }
 
         public virtual int SaveChanges()
         {
