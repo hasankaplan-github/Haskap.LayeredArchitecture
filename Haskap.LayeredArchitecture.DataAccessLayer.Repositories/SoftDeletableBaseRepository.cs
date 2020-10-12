@@ -1,5 +1,5 @@
-﻿using Haskap.LayeredArchitecture.Core.Repositories;
-using Haskap.LayeredArchitecture.Entites;
+﻿using Haskap.LayeredArchitecture.Core.Entities;
+using Haskap.LayeredArchitecture.Core.Repositories;
 using Haskap.LayeredArchitecture.Utilities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,11 +9,11 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Haskap.LayeredArchitecture.Repositories
+namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
 {
     public class SoftDeletableBaseRepository<TEntity, TId, TDbContext> : BaseRepository<TEntity, TId, TDbContext>, ISoftDeletableBaseRepository<TEntity, TId>
-        where TEntity : BaseEntity<TId>, ISoftDeletable
-        where TDbContext : Microsoft.EntityFrameworkCore.DbContext
+       where TEntity : BaseEntity<TId>, ISoftDeletable
+       where TDbContext : Microsoft.EntityFrameworkCore.DbContext
     {
         public SoftDeletableBaseRepository(TDbContext dbContext) : base(dbContext)
         {

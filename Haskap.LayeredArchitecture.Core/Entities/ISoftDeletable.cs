@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Haskap.LayeredArchitecture.Entites
+namespace Haskap.LayeredArchitecture.Core.Entities
 {
     public interface ISoftDeletable
     {

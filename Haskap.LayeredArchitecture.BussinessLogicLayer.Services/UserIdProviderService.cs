@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Haskap.LayeredArchitecture.Services
+namespace Haskap.LayeredArchitecture.BussinessLogicLayer.Services
 {
     public class UserIdProviderService<TId>
     {

@@ -1,4 +1,4 @@
-﻿using Haskap.LayeredArchitecture.Entites;
+﻿using Haskap.LayeredArchitecture.Core.Entities;
 using Haskap.LayeredArchitecture.Utilities;
 using System;
 using System.Collections.Generic;

@@ -1,11 +1,11 @@
-﻿using Haskap.LayeredArchitecture.Entites;
+﻿using Haskap.LayeredArchitecture.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Haskap.LayeredArchitecture.DbContexts.Configurations
+namespace Haskap.LayeredArchitecture.DataAccessLayer.DbContexts.Configurations
 {
     public class BaseEntityConfiguration<TEntity, TId> : IEntityTypeConfiguration<TEntity> where TEntity : BaseEntity<TId>
     {

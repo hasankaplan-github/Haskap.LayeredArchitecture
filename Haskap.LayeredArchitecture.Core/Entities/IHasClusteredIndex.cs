@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Haskap.LayeredArchitecture.Entites
+namespace Haskap.LayeredArchitecture.Core.Entities
 {
-    public interface IClusteredIndexable
+    public interface IHasClusteredIndex
     {
         long ClusteredIndex { get; set; }
     }

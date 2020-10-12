@@ -4,10 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Haskap.LayeredArchitecture.Repositories.UnitOfWork
+namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories.UnitOfWork
 {
     public class BaseUnitOfWork<TDbContext> : IBaseUnitOfWork
-        where TDbContext : DbContext
+      where TDbContext : DbContext
     {
         protected readonly TDbContext dbContext;
 

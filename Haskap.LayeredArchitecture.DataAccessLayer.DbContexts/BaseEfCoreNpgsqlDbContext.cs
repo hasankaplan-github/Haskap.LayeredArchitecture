@@ -1,12 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Haskap.LayeredArchitecture.Utilities.ExtensionMethods;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Reflection;
-using Haskap.LayeredArchitecture.Utilities.ExtensionMethods;
 
-namespace Haskap.LayeredArchitecture.DbContexts
+namespace Haskap.LayeredArchitecture.DataAccessLayer.DbContexts
 {
     public class BaseEfCoreNpgsqlDbContext : DbContext
     {

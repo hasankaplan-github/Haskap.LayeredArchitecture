@@ -1,5 +1,5 @@
-﻿using Haskap.LayeredArchitecture.Core.Repositories;
-using Haskap.LayeredArchitecture.Entites;
+﻿using Haskap.LayeredArchitecture.Core.Entities;
+using Haskap.LayeredArchitecture.Core.Repositories;
 using Haskap.LayeredArchitecture.Utilities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Haskap.LayeredArchitecture.Repositories
+namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
 {
     public class BaseRepository<TEntity, TId, TDbContext> : IBaseRepository<TEntity, TId>
         where TEntity : BaseEntity<TId>
@@ -296,9 +296,9 @@ namespace Haskap.LayeredArchitecture.Repositories
             return await this.GetPagedListAsync(query, pageIndex, pageSize);
         }
 
-        
 
-        
+
+
 
         public virtual async Task<IList<TEntity>> GetAllAsync(string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
         {
@@ -320,8 +320,8 @@ namespace Haskap.LayeredArchitecture.Repositories
             return await query.ToListAsync();
         }
 
-        
-        
+
+
 
         public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate, string includeProperties = "")
         {
