@@ -24,13 +24,14 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.DbContexts
                 entityType.SetTableName(entityType.DisplayName().ToSnakeCase(CaseOption.LowerCase));
 
                 foreach (var property in entityType.GetProperties())
-                    property.SetColumnName(property.GetColumnName().ToSnakeCase(CaseOption.LowerCase));
+                    property.SetColumnName(property.Name.ToSnakeCase(CaseOption.LowerCase));
 
                 foreach (var key in entityType.GetKeys())
                     key.SetName(key.GetName().ToSnakeCase(CaseOption.LowerCase));
 
                 foreach (var foreignKey in entityType.GetForeignKeys())
                     foreignKey.SetConstraintName(foreignKey.GetConstraintName().ToSnakeCase(CaseOption.LowerCase));
+                    //foreignKey.PrincipalKey.SetName(foreignKey.PrincipalKey.GetName().ToSnakeCase(CaseOption.LowerCase));
 
                 foreach (var index in entityType.GetIndexes())
                     index.SetName(index.GetName().ToSnakeCase(CaseOption.LowerCase));

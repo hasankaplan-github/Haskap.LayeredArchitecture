@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace Haskap.LayeredArchitecture.DataAccessLayer.DbContexts.Configurations
@@ -11,7 +12,14 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.DbContexts.Configurations
     {
         public virtual void Configure(EntityTypeBuilder<TEntity> builder)
         {
+
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
+            if (typeof(TEntity).GetInterface("IHasClusteredIndex") != null)
+            {
+                builder.HasKey(x => x.Id).IsClustered(false);
+                builder.HasIndex(x => (x as IHasClusteredIndex).ClusteredIndex).IsClustered();
+            }
+
             //builder.Property(x => x.ClusteredIndex).UseIdentityAlwaysColumn();
             //builder.ForNpgsqlHasIndex(x => x.ClusteredIndex).IsUnique();
 
