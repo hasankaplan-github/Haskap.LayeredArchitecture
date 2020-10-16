@@ -32,8 +32,8 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.DbContexts
                     key.SetName(key.GetName().ToSnakeCase(CaseOption.UpperCase));
 
                 foreach (var foreignKey in entityType.GetForeignKeys())
-                    foreignKey.SetConstraintName(foreignKey.GetConstraintName().ToSnakeCase(CaseOption.UpperCase));
-                //foreignKey.PrincipalKey.SetName(foreignKey.PrincipalKey.GetName().ToSnakeCase(CaseOption.LowerCase));
+                    foreignKey.PrincipalKey.SetName(foreignKey.PrincipalKey.GetName().ToSnakeCase(CaseOption.UpperCase));
+                //foreignKey.SetConstraintName(foreignKey.GetConstraintName().ToSnakeCase(CaseOption.UpperCase));
 
                 foreach (var index in entityType.GetIndexes())
                     index.SetName(index.GetName().ToSnakeCase(CaseOption.UpperCase));
