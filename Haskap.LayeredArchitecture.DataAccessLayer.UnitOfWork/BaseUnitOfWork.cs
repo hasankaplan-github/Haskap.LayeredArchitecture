@@ -1,4 +1,4 @@
-﻿using Haskap.LayeredArchitecture.Core.Repositories.UnitOfWork;
+﻿using Haskap.LayeredArchitecture.Core.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
-namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories.UnitOfWork
+namespace Haskap.LayeredArchitecture.DataAccessLayer.UnitOfWork
 {
     public class BaseUnitOfWork<TDbContext> : IBaseUnitOfWork
       where TDbContext : DbContext

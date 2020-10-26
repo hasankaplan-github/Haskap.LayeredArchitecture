@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Haskap.LayeredArchitecture.Core.Repositories.UnitOfWork
+namespace Haskap.LayeredArchitecture.Core.UnitOfWork
 {
     public interface IBaseUnitOfWork : IDisposable
     {
