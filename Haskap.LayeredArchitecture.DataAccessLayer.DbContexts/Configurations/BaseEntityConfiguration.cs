@@ -8,13 +8,15 @@ using System.Text;
 
 namespace Haskap.LayeredArchitecture.DataAccessLayer.DbContexts.Configurations
 {
-    public class BaseEntityConfiguration<TEntity, TId> : IEntityTypeConfiguration<TEntity> where TEntity : BaseEntity<TId>
+    public class BaseEntityConfiguration<TEntity, TId> : IEntityTypeConfiguration<TEntity> 
+        where TEntity : BaseEntity<TId>
     {
         public virtual void Configure(EntityTypeBuilder<TEntity> builder)
         {
 
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            if (typeof(TEntity).GetInterface("IHasClusteredIndex") != null)
+            
+            if (typeof(IHasClusteredIndex).IsAssignableFrom(typeof(TEntity)))
             {
                 builder.HasKey(x => x.Id).IsClustered(false);
                 builder.HasIndex(x => (x as IHasClusteredIndex).ClusteredIndex).IsClustered();
