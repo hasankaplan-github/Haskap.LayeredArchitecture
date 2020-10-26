@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace Haskap.LayeredArchitecture.DataAccessLayer.DbContexts
+namespace Haskap.LayeredArchitecture.DataAccessLayer.DbContexts.NpgsqlDbContext
 {
     public class BaseEfCoreNpgsqlDbContext : DbContext
     {

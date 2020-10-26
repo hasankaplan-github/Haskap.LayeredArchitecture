@@ -1,10 +1,8 @@
 ﻿using Haskap.LayeredArchitecture.Utilities.ExtensionMethods;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Haskap.LayeredArchitecture.DataAccessLayer.DbContexts
+namespace Haskap.LayeredArchitecture.DataAccessLayer.DbContexts.OraclelDbContext
 {
     public class BaseEfCoreOracleDbContext : DbContext
     {

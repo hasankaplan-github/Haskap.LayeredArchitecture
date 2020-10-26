@@ -1,13 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Haskap.LayeredArchitecture.DataAccessLayer.DbContexts
+namespace Haskap.LayeredArchitecture.DataAccessLayer.DbContexts.MsSqlDbContext
 {
     public class BaseEfCoreMsSqlDbContext : DbContext
     {
-        public BaseEfCoreMsSqlDbContext(DbContextOptions<BaseEfCoreNpgsqlDbContext> options) : base(options)
+        public BaseEfCoreMsSqlDbContext(DbContextOptions<BaseEfCoreMsSqlDbContext> options) : base(options)
         {
         }
 
