@@ -20,7 +20,7 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
 
         }
 
-        public virtual TEntity GetSoftDeleted(Expression<Func<TEntity, bool>> where, string includeProperties = "")
+        public virtual TEntity GetDeleted(Expression<Func<TEntity, bool>> where, string includeProperties = "")
         {
             IQueryable<TEntity> query = this.dbSet;
             query = query.Where(e => e.IsDeleted == true).Where(where);
@@ -33,7 +33,7 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
             return query.SingleOrDefault();
         }
 
-        public virtual IList<TEntity> GetAllSoftDeleted(string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
+        public virtual IList<TEntity> GetAllDeleted(string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
         {
             IQueryable<TEntity> query = this.dbSet;
             query = query.Where(e => e.IsDeleted == true);
@@ -50,7 +50,7 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
             return query.ToList();
         }
 
-        public virtual IList<TEntity> GetManySoftDeleted(Expression<Func<TEntity, bool>> where, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
+        public virtual IList<TEntity> GetManyDeleted(Expression<Func<TEntity, bool>> where, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
         {
             IQueryable<TEntity> query = this.dbSet;
             query = query.Where(e => e.IsDeleted == true).Where(where);
@@ -67,7 +67,7 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
             return query.ToList();
         }
 
-        public virtual async Task<IList<TEntity>> GetManySoftDeletedAsync(Expression<Func<TEntity, bool>> where, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
+        public virtual async Task<IList<TEntity>> GetManyDeletedAsync(Expression<Func<TEntity, bool>> where, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
         {
             IQueryable<TEntity> query = this.dbSet;
             query = query.Where(e => e.IsDeleted == true).Where(where);
@@ -84,7 +84,7 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
             return await query.ToListAsync();
         }
 
-        public virtual async Task<PagedList<TEntity>> GetManySoftDeletedAsync(Expression<Func<TEntity, bool>> where, int pageIndex, int pageSize, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
+        public virtual async Task<PagedList<TEntity>> GetManyDeletedAsync(Expression<Func<TEntity, bool>> where, int pageIndex, int pageSize, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
         {
             IQueryable<TEntity> query = this.dbSet;
             query = query.Where(e => e.IsDeleted == true).Where(where);
@@ -101,7 +101,7 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
             return await GetPagedListAsync(query, pageIndex, pageSize);
         }
 
-        public virtual async Task<IList<TEntity>> GetAllSoftDeletedAsync(string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
+        public virtual async Task<IList<TEntity>> GetAllDeletedAsync(string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
         {
             IQueryable<TEntity> query = this.dbSet;
             query = query.Where(e => e.IsDeleted == true);
@@ -118,7 +118,7 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
             return await query.ToListAsync();
         }
 
-        public virtual async Task<PagedList<TEntity>> GetAllSoftDeletedAsync(int pageIndex, int pageSize, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
+        public virtual async Task<PagedList<TEntity>> GetAllDeletedAsync(int pageIndex, int pageSize, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
         {
             IQueryable<TEntity> query = this.dbSet;
             query = query.Where(e => e.IsDeleted == true);
@@ -137,7 +137,7 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
 
 
 
-        public virtual void SoftDelete(TEntity entity)
+        public override void Delete(TEntity entity)
         {
             entity.IsDeleted = true;
             //entity.DeletionDate = DateTime.Now;
@@ -177,13 +177,13 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
         }
 
 
-        public virtual void SoftDelete(TId id)
+        public override void Delete(TId id)
         {
             var entity = GetById(id);
             if (entity == null) return;
             else
             {
-                SoftDelete(entity);
+                Delete(entity);
                 /*
                 if (entity.GetType().GetProperty("IsDelete") != null)
                 {
@@ -200,28 +200,28 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
             }
         }
 
-        public virtual void SoftDelete(Expression<Func<TEntity, bool>> where, string includeProperties = "")
+        public override void Delete(Expression<Func<TEntity, bool>> where, string includeProperties = "")
         {
             var entities = GetMany(where, includeProperties);
             foreach (var entity in entities)
             {
-                SoftDelete(entity);
+                Delete(entity);
             }
         }
 
-        public virtual void SoftDeleteRange(params TEntity[] entities)
+        public override void DeleteRange(params TEntity[] entities)
         {
             foreach (var entity in entities)
             {
-                SoftDelete(entity);
+                Delete(entity);
             }
         }
 
-        public virtual void SoftDeleteRange(IEnumerable<TEntity> entities)
+        public override void DeleteRange(IEnumerable<TEntity> entities)
         {
             foreach (var entity in entities)
             {
-                SoftDelete(entity);
+                Delete(entity);
             }
         }
 
@@ -243,7 +243,7 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
 
         public virtual void UnDelete(Expression<Func<TEntity, bool>> where, string includeProperties = "")
         {
-            var entities = GetManySoftDeleted(where, includeProperties);
+            var entities = GetManyDeleted(where, includeProperties);
             foreach (var entity in entities)
             {
                 UnDelete(entity);
@@ -264,6 +264,31 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
             {
                 UnDelete(entity);
             }
+        }
+
+        public virtual void Drop(TEntity entity)
+        {
+            base.Delete(entity);
+        }
+
+        public virtual void Drop(TId id)
+        {
+            base.Delete(id);
+        }
+
+        public virtual void Drop(Expression<Func<TEntity, bool>> where, string includeProperties = "")
+        {
+            base.Delete(where, includeProperties);
+        }
+
+        public virtual void DropRange(params TEntity[] entities)
+        {
+            base.DeleteRange(entities);
+        }
+
+        public virtual void DropRange(IEnumerable<TEntity> entities)
+        {
+            base.DeleteRange(entities);
         }
     }
 }
