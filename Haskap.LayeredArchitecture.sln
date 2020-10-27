@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Haskap.LayeredArchitecture.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Haskap.LayeredArchitecture.DataAccessLayer.DbContexts.OraclelDbContext", "Haskap.LayeredArchitecture.DataAccessLayer.DbContexts.OraclelDbContext\Haskap.LayeredArchitecture.DataAccessLayer.DbContexts.OraclelDbContext.csproj", "{42DA3BE1-0037-48BE-8268-15F12FCF8870}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Haskap.LayeredArchitecture.DataAccessLayer.UnitOfWork", "Haskap.LayeredArchitecture.DataAccessLayer.UnitOfWork\Haskap.LayeredArchitecture.DataAccessLayer.UnitOfWork.csproj", "{D969C8B4-CBF4-4723-91F8-07531BFD4F32}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Haskap.LayeredArchitecture.DataAccessLayer.UnitOfWork", "Haskap.LayeredArchitecture.DataAccessLayer.UnitOfWork\Haskap.LayeredArchitecture.DataAccessLayer.UnitOfWork.csproj", "{D969C8B4-CBF4-4723-91F8-07531BFD4F32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Haskap.LayeredArchitecture.DataAccessLayer.EntityConfiguration", "Haskap.LayeredArchitecture.DataAccessLayer.EntityConfiguration\Haskap.LayeredArchitecture.DataAccessLayer.EntityConfiguration.csproj", "{1CEF48AD-465B-43FB-A59F-F68EA0C4CEC7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +67,10 @@ Global
 		{D969C8B4-CBF4-4723-91F8-07531BFD4F32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D969C8B4-CBF4-4723-91F8-07531BFD4F32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D969C8B4-CBF4-4723-91F8-07531BFD4F32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CEF48AD-465B-43FB-A59F-F68EA0C4CEC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CEF48AD-465B-43FB-A59F-F68EA0C4CEC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CEF48AD-465B-43FB-A59F-F68EA0C4CEC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CEF48AD-465B-43FB-A59F-F68EA0C4CEC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +84,7 @@ Global
 		{F3FD4A11-63BE-4AE4-B1B7-2B3013AE26C6} = {63EAD6D4-35DB-4B18-A89C-DD9BF2D3E222}
 		{42DA3BE1-0037-48BE-8268-15F12FCF8870} = {63EAD6D4-35DB-4B18-A89C-DD9BF2D3E222}
 		{D969C8B4-CBF4-4723-91F8-07531BFD4F32} = {63EAD6D4-35DB-4B18-A89C-DD9BF2D3E222}
+		{1CEF48AD-465B-43FB-A59F-F68EA0C4CEC7} = {63EAD6D4-35DB-4B18-A89C-DD9BF2D3E222}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4F971748-7755-480A-BBB9-2DC28D657DC9}
