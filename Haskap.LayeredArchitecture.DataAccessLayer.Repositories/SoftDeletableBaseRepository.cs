@@ -23,7 +23,7 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
         public virtual TEntity GetDeleted(Expression<Func<TEntity, bool>> where, string includeProperties = "")
         {
             IQueryable<TEntity> query = this.dbSet;
-            query = query.Where(e => e.IsDeleted == true).Where(where);
+            query = query.IgnoreQueryFilters().Where(e => e.IsDeleted == true).Where(where);
 
             foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
@@ -36,7 +36,7 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
         public virtual IList<TEntity> GetAllDeleted(string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
         {
             IQueryable<TEntity> query = this.dbSet;
-            query = query.Where(e => e.IsDeleted == true);
+            query = query.IgnoreQueryFilters().Where(e => e.IsDeleted == true);
 
             foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
@@ -53,7 +53,7 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
         public virtual IList<TEntity> GetManyDeleted(Expression<Func<TEntity, bool>> where, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
         {
             IQueryable<TEntity> query = this.dbSet;
-            query = query.Where(e => e.IsDeleted == true).Where(where);
+            query = query.IgnoreQueryFilters().Where(e => e.IsDeleted == true).Where(where);
 
             foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
@@ -70,7 +70,7 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
         public virtual async Task<IList<TEntity>> GetManyDeletedAsync(Expression<Func<TEntity, bool>> where, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
         {
             IQueryable<TEntity> query = this.dbSet;
-            query = query.Where(e => e.IsDeleted == true).Where(where);
+            query = query.IgnoreQueryFilters().Where(e => e.IsDeleted == true).Where(where);
 
             foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
@@ -87,7 +87,7 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
         public virtual async Task<PagedList<TEntity>> GetManyDeletedAsync(Expression<Func<TEntity, bool>> where, int pageIndex, int pageSize, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
         {
             IQueryable<TEntity> query = this.dbSet;
-            query = query.Where(e => e.IsDeleted == true).Where(where);
+            query = query.IgnoreQueryFilters().Where(e => e.IsDeleted == true).Where(where);
 
             foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
@@ -104,7 +104,7 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
         public virtual async Task<IList<TEntity>> GetAllDeletedAsync(string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
         {
             IQueryable<TEntity> query = this.dbSet;
-            query = query.Where(e => e.IsDeleted == true);
+            query = query.IgnoreQueryFilters().Where(e => e.IsDeleted == true);
 
             foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
@@ -121,7 +121,7 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
         public virtual async Task<PagedList<TEntity>> GetAllDeletedAsync(int pageIndex, int pageSize, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
         {
             IQueryable<TEntity> query = this.dbSet;
-            query = query.Where(e => e.IsDeleted == true);
+            query = query.IgnoreQueryFilters().Where(e => e.IsDeleted == true);
 
             foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {

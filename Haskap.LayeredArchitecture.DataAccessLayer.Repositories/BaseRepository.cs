@@ -40,10 +40,6 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
                 query = query.AsNoTracking();
             }
 
-            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            {
-                query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
-            }
             query = query.Where(where);
 
             foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
@@ -63,10 +59,6 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
                 query = query.AsNoTracking();
             }
 
-            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            {
-                query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
-            }
             query = query.Where(where);
 
             if (include != null)
@@ -84,11 +76,6 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
             if (disableTracking)
             {
                 query = query.AsNoTracking();
-            }
-
-            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            {
-                query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
             }
 
             foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
@@ -110,11 +97,6 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
             if (disableTracking)
             {
                 query = query.AsNoTracking();
-            }
-
-            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            {
-                query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
             }
 
             if (include != null)
@@ -139,10 +121,6 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
                 query = query.AsNoTracking();
             }
 
-            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            {
-                query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
-            }
             query = query.Where(where);
 
             foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
@@ -166,10 +144,6 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
                 query = query.AsNoTracking();
             }
 
-            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            {
-                query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
-            }
             query = query.Where(where);
 
             if (include != null)
@@ -307,10 +281,10 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
         public virtual bool Exists(Expression<Func<TEntity, bool>> predicate, string includeProperties = "")
         {
             IQueryable<TEntity> query = this.dbSet;
-            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            {
-                query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
-            }
+            //if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
+            //{
+            //    query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
+            //}
 
             foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
@@ -323,10 +297,10 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
         public virtual bool Exists(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
         {
             IQueryable<TEntity> query = this.dbSet;
-            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            {
-                query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
-            }
+            //if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
+            //{
+            //    query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
+            //}
 
             if (include != null)
             {
@@ -361,11 +335,6 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
                 query = query.AsNoTracking();
             }
 
-            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            {
-                query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
-            }
-
             foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 query = query.Include(includeProperty);
@@ -386,11 +355,6 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
             if (disableTracking)
             {
                 query = query.AsNoTracking();
-            }
-
-            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            {
-                query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
             }
 
             if (include != null)
@@ -415,10 +379,6 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
                 query = query.AsNoTracking();
             }
 
-            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            {
-                query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
-            }
             query = query.Where(where);
 
             foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
@@ -442,10 +402,6 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
                 query = query.AsNoTracking();
             }
 
-            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            {
-                query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
-            }
             query = query.Where(where);
 
             if (include != null)
@@ -469,10 +425,6 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
                 query = query.AsNoTracking();
             }
 
-            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            {
-                query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
-            }
             query = query.Where(where);
 
             foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
@@ -496,10 +448,6 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
                 query = query.AsNoTracking();
             }
 
-            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            {
-                query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
-            }
             query = query.Where(where);
 
             if (include != null)
@@ -527,11 +475,6 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
                 query = query.AsNoTracking();
             }
 
-            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            {
-                query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
-            }
-
             foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 query = query.Include(includeProperty);
@@ -553,11 +496,6 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
                 query = query.AsNoTracking();
             }
 
-            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            {
-                query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
-            }
-
             if (include != null)
             {
                 query = include(query);
@@ -576,10 +514,10 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
         public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate, string includeProperties = "")
         {
             IQueryable<TEntity> query = this.dbSet;
-            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            {
-                query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
-            }
+            //if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
+            //{
+            //    query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
+            //}
             foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 query = query.Include(includeProperty);
@@ -591,10 +529,10 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
         public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
         {
             IQueryable<TEntity> query = this.dbSet;
-            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            {
-                query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
-            }
+            //if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
+            //{
+            //    query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
+            //}
 
             if (include != null)
             {
@@ -607,10 +545,10 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
         public virtual int Count(Expression<Func<TEntity, bool>> predicate, string includeProperties = "")
         {
             IQueryable<TEntity> query = this.dbSet;
-            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            {
-                query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
-            }
+            //if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
+            //{
+            //    query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
+            //}
             foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 query = query.Include(includeProperty);
@@ -622,10 +560,10 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
         public virtual int Count(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
         {
             IQueryable<TEntity> query = this.dbSet;
-            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            {
-                query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
-            }
+            //if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
+            //{
+            //    query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
+            //}
 
             if (include != null)
             {
