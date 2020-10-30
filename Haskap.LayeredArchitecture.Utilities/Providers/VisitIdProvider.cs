@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Haskap.LayeredArchitecture.BussinessLogicLayer.Services
+namespace Haskap.LayeredArchitecture.Utilities.Providers
 {
-    public class VisitIdProviderService
+    public class VisitIdProvider
     {
-        public VisitIdProviderService()
+        public VisitIdProvider()
         {
             VisitId = Guid.NewGuid();
         }

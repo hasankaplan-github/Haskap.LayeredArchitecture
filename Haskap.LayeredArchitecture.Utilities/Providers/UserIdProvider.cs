@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Haskap.LayeredArchitecture.BussinessLogicLayer.Services
+namespace Haskap.LayeredArchitecture.Utilities.Providers
 {
-    public class UserIdProviderService<TId>
+    public class UserIdProvider<TId>
     {
-        public UserIdProviderService()
+        public UserIdProvider()
         {
             UserId = default;
         }
