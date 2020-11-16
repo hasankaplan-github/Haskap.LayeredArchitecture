@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Haskap.LayeredArchitecture.DataAccessLayer.UnitOfWork
 {
@@ -49,6 +51,20 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.UnitOfWork
             try
             {
                 int retVal = this.dbContext.SaveChanges();
+                return retVal;
+            }
+            catch (Exception ex)
+            {
+                //TODO:Logging
+                throw;
+            }
+        }
+
+        public virtual Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var retVal = this.dbContext.SaveChangesAsync(cancellationToken);
                 return retVal;
             }
             catch (Exception ex)
