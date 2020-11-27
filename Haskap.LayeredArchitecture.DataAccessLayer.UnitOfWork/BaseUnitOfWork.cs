@@ -60,11 +60,11 @@ namespace Haskap.LayeredArchitecture.DataAccessLayer.UnitOfWork
             }
         }
 
-        public virtual Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        public virtual async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             try
             {
-                var retVal = this.dbContext.SaveChangesAsync(cancellationToken);
+                var retVal = await this.dbContext.SaveChangesAsync(cancellationToken);
                 return retVal;
             }
             catch (Exception ex)
