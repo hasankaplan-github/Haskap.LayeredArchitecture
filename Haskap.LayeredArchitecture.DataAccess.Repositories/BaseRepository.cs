@@ -9,7 +9,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
+namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 {
     public class BaseRepository<TEntity, TId, TDbContext> : IBaseRepository<TEntity, TId>
         where TEntity : BaseEntity<TId>

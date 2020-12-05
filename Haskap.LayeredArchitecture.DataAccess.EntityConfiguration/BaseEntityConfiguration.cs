@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 
-namespace Haskap.LayeredArchitecture.DataAccessLayer.EntityConfiguration
+namespace Haskap.LayeredArchitecture.DataAccess.EntityConfiguration
 {
     public class BaseEntityConfiguration<TEntity, TId> : IEntityTypeConfiguration<TEntity>
         where TEntity : BaseEntity<TId>

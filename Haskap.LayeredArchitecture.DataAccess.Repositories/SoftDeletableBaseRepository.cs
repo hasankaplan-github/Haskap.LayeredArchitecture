@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Haskap.LayeredArchitecture.DataAccessLayer.Repositories
+namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 {
     public class SoftDeletableBaseRepository<TEntity, TId, TDbContext> : BaseRepository<TEntity, TId, TDbContext>, ISoftDeletableBaseRepository<TEntity, TId>
        where TEntity : BaseEntity<TId>, ISoftDeletable

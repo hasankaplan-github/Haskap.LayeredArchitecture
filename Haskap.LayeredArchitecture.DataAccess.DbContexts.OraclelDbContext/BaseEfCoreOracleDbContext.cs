@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace Haskap.LayeredArchitecture.DataAccessLayer.DbContexts.OraclelDbContext
+namespace Haskap.LayeredArchitecture.DataAccess.DbContexts.OraclelDbContext
 {
     public class BaseEfCoreOracleDbContext : DbContext
     {
