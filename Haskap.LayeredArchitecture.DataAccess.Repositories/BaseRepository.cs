@@ -1,5 +1,6 @@
 ﻿using Haskap.LayeredArchitecture.Core.Entities;
 using Haskap.LayeredArchitecture.Core.Repositories;
+using Haskap.LayeredArchitecture.Core.Repositories.Specifications;
 using Haskap.LayeredArchitecture.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
@@ -572,6 +573,45 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
             return query.Count(predicate);
         }
+
+        public virtual IList<TEntity> Search(ISpecification<TEntity, TId> specification, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        {
+            IQueryable<TEntity> query = this.dbSet;
+
+            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            query = query.Where(x => specification.IsSatisfiedBy(x));
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+
+            return query.ToList();
+        }
+
+        public virtual IList<TEntity> Search(ISpecification<TEntity, TId> specification, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        {
+            IQueryable<TEntity> query = this.dbSet;
+
+            if (include != null)
+            {
+                query = include(query);
+            }
+
+            query = query.Where(x => specification.IsSatisfiedBy(x));
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+
+            return query.ToList();
+        }
+
         #endregion
     }
 
