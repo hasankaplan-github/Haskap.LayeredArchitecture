@@ -1,5 +1,4 @@
 ﻿using Haskap.LayeredArchitecture.Core.Entities;
-using Haskap.LayeredArchitecture.Core.Repositories.Specifications;
 using Haskap.LayeredArchitecture.Utilities;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
@@ -69,8 +68,5 @@ namespace Haskap.LayeredArchitecture.Core.Repositories
         IList<TEntity> GetMany(Expression<Func<TEntity, bool>> where, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false);
         IList<TEntity> GetAll(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false);
         TEntity Get(Expression<Func<TEntity, bool>> where, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool disableTracking = false);
-
-        IList<TEntity> Search(ISpecification<TEntity, TId> specification, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false);
-        IList<TEntity> Search(ISpecification<TEntity, TId> specification, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false);
     }
 }
