@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Haskap.LayeredArchitecture.BussinessLogicLayer.Services
+namespace Haskap.LayeredArchitecture.BusinessLogic.Services
 {
     public class BaseService<TUnitOfWork> : IBaseService<TUnitOfWork>
         where TUnitOfWork : IBaseUnitOfWork
