@@ -1,5 +1,6 @@
 ﻿using Haskap.LayeredArchitecture.Core.Entities;
 using Haskap.LayeredArchitecture.Core.Repositories;
+using Haskap.LayeredArchitecture.Core.Specifications;
 using Haskap.LayeredArchitecture.Utilities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -289,6 +290,84 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
         public virtual void DropRange(IEnumerable<TEntity> entities)
         {
             base.DeleteRange(entities);
+        }
+
+        public virtual void Drop(ISpecification<TEntity, TId> specification, string includeProperties = "")
+        {
+            base.Delete(specification, includeProperties);
+        }
+
+        public virtual void UnDelete(ISpecification<TEntity, TId> specification, string includeProperties = "")
+        {
+            var entities = GetManyDeleted(specification, includeProperties);
+            foreach (var entity in entities)
+            {
+                UnDelete(entity);
+            }
+        }
+
+        public virtual TEntity GetDeleted(ISpecification<TEntity, TId> specification, string includeProperties = "")
+        {
+            IQueryable<TEntity> query = this.dbSet;
+            query = query.IgnoreQueryFilters().Where(e => e.IsDeleted == true).Where(x => specification.IsSatisfiedBy(x));
+
+            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            return query.SingleOrDefault();
+        }
+
+        public virtual IList<TEntity> GetManyDeleted(ISpecification<TEntity, TId> specification, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
+        {
+            IQueryable<TEntity> query = this.dbSet;
+            query = query.IgnoreQueryFilters().Where(e => e.IsDeleted == true).Where(x => specification.IsSatisfiedBy(x));
+
+            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            if (orderBy != null)
+            {
+                return orderBy(query).ToList();
+            }
+            return query.ToList();
+        }
+
+        public virtual async Task<IList<TEntity>> GetManyDeletedAsync(ISpecification<TEntity, TId> specification, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
+        {
+            IQueryable<TEntity> query = this.dbSet;
+            query = query.IgnoreQueryFilters().Where(e => e.IsDeleted == true).Where(x => specification.IsSatisfiedBy(x));
+
+            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+            return await query.ToListAsync();
+        }
+
+        public virtual async Task<PagedList<TEntity>> GetManyDeletedAsync(ISpecification<TEntity, TId> specification, int pageIndex, int pageSize, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
+        {
+            IQueryable<TEntity> query = this.dbSet;
+            query = query.IgnoreQueryFilters().Where(e => e.IsDeleted == true).Where(x => specification.IsSatisfiedBy(x));
+
+            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+            return await GetPagedListAsync(query, pageIndex, pageSize);
         }
     }
 }

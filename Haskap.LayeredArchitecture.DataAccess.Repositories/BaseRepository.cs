@@ -1,5 +1,6 @@
 ﻿using Haskap.LayeredArchitecture.Core.Entities;
 using Haskap.LayeredArchitecture.Core.Repositories;
+using Haskap.LayeredArchitecture.Core.Specifications;
 using Haskap.LayeredArchitecture.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
@@ -462,10 +463,6 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
             return await this.GetPagedListAsync(query, pageIndex, pageSize);
         }
 
-
-
-
-
         public virtual async Task<IList<TEntity>> GetAllAsync(string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
             IQueryable<TEntity> query = this.dbSet;
@@ -507,9 +504,6 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
             }
             return await query.ToListAsync();
         }
-
-
-
 
         public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate, string includeProperties = "")
         {
@@ -571,6 +565,294 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
             }
 
             return query.Count(predicate);
+        }
+
+        public virtual void Delete(ISpecification<TEntity, TId> specification, string includeProperties = "")
+        {
+            var entities = GetMany(specification, includeProperties);
+            foreach (var entity in entities)
+            {
+                Delete(entity);
+            }
+        }
+
+        public virtual TEntity Get(ISpecification<TEntity, TId> specification, string includeProperties = "", bool disableTracking = false)
+        {
+            IQueryable<TEntity> query = this.dbSet;
+
+            if (disableTracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+            query = query.Where(x => specification.IsSatisfiedBy(x));
+
+            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            return query.SingleOrDefault();
+        }
+
+        public virtual IList<TEntity> GetMany(ISpecification<TEntity, TId> specification, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        {
+            IQueryable<TEntity> query = this.dbSet;
+
+            if (disableTracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+            query = query.Where(x => specification.IsSatisfiedBy(x));
+
+            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            if (orderBy != null)
+            {
+                return orderBy(query).ToList();
+            }
+            return query.ToList();
+        }
+
+        public virtual bool Exists(ISpecification<TEntity, TId> specification, string includeProperties = "")
+        {
+            IQueryable<TEntity> query = this.dbSet;
+            //if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
+            //{
+            //    query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
+            //}
+
+            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            return query.Any(x => specification.IsSatisfiedBy(x));
+        }
+
+        public virtual async Task<IList<TEntity>> GetManyAsync(ISpecification<TEntity, TId> specification, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        {
+            IQueryable<TEntity> query = this.dbSet;
+
+            if (disableTracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+            query = query.Where(x => specification.IsSatisfiedBy(x));
+
+            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            if (orderBy != null)
+            {
+                return await orderBy(query).ToListAsync();
+            }
+            return await query.ToListAsync();
+        }
+
+        public virtual async Task<PagedList<TEntity>> GetManyAsync(ISpecification<TEntity, TId> specification, int pageIndex, int pageSize, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        {
+            IQueryable<TEntity> query = this.dbSet;
+
+            if (disableTracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+            query = query.Where(x => specification.IsSatisfiedBy(x));
+
+            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+            return await this.GetPagedListAsync(query, pageIndex, pageSize);
+        }
+
+        public virtual async Task<int> CountAsync(ISpecification<TEntity, TId> specification, string includeProperties = "")
+        {
+            IQueryable<TEntity> query = this.dbSet;
+            //if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
+            //{
+            //    query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
+            //}
+            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            return await query.CountAsync(x => specification.IsSatisfiedBy(x));
+        }
+
+        public virtual int Count(ISpecification<TEntity, TId> specification, string includeProperties = "")
+        {
+            IQueryable<TEntity> query = this.dbSet;
+            //if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
+            //{
+            //    query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
+            //}
+            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            return query.Count(x => specification.IsSatisfiedBy(x));
+        }
+
+        public virtual int Count(ISpecification<TEntity, TId> specification, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
+        {
+            IQueryable<TEntity> query = this.dbSet;
+            //if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
+            //{
+            //    query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
+            //}
+
+            if (include != null)
+            {
+                query = include(query);
+            }
+
+            return query.Count(x => specification.IsSatisfiedBy(x));
+        }
+
+        public virtual async Task<int> CountAsync(ISpecification<TEntity, TId> specification, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
+        {
+            IQueryable<TEntity> query = this.dbSet;
+            //if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
+            //{
+            //    query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
+            //}
+
+            if (include != null)
+            {
+                query = include(query);
+            }
+
+            return await query.CountAsync(x => specification.IsSatisfiedBy(x));
+        }
+
+        public virtual async Task<PagedList<TEntity>> GetManyAsync(ISpecification<TEntity, TId> specification, int pageIndex, int pageSize, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        {
+            IQueryable<TEntity> query = this.dbSet;
+
+            if (disableTracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+            query = query.Where(x => specification.IsSatisfiedBy(x));
+
+            if (include != null)
+            {
+                query = include(query);
+            }
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+            return await this.GetPagedListAsync(query, pageIndex, pageSize);
+        }
+
+        public virtual async Task<IList<TEntity>> GetManyAsync(ISpecification<TEntity, TId> specification, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        {
+            IQueryable<TEntity> query = this.dbSet;
+
+            if (disableTracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+            query = query.Where(x => specification.IsSatisfiedBy(x));
+
+            if (include != null)
+            {
+                query = include(query);
+            }
+
+            if (orderBy != null)
+            {
+                return await orderBy(query).ToListAsync();
+            }
+            return await query.ToListAsync();
+        }
+
+        public virtual bool Exists(ISpecification<TEntity, TId> specification, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
+        {
+            IQueryable<TEntity> query = this.dbSet;
+            //if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
+            //{
+            //    query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
+            //}
+
+            if (include != null)
+            {
+                query = include(query);
+            }
+
+            return query.Any(x => specification.IsSatisfiedBy(x));
+        }
+
+        public virtual void Delete(ISpecification<TEntity, TId> specification, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
+        {
+            var entities = GetMany(specification, include);
+            foreach (var entity in entities)
+            {
+                Delete(entity);
+            }
+        }
+
+        public virtual IList<TEntity> GetMany(ISpecification<TEntity, TId> specification, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        {
+            IQueryable<TEntity> query = this.dbSet;
+
+            if (disableTracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+            query = query.Where(x => specification.IsSatisfiedBy(x));
+
+            if (include != null)
+            {
+                query = include(query);
+            }
+
+            if (orderBy != null)
+            {
+                return orderBy(query).ToList();
+            }
+            return query.ToList();
+        }
+
+        public virtual TEntity Get(ISpecification<TEntity, TId> specification, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool disableTracking = false)
+        {
+            IQueryable<TEntity> query = this.dbSet;
+
+            if (disableTracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+            query = query.Where(x => specification.IsSatisfiedBy(x));
+
+            if (include != null)
+            {
+                query = include(query);
+            }
+
+            return query.SingleOrDefault();
         }
 
         #endregion

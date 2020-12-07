@@ -1,4 +1,5 @@
 ﻿using Haskap.LayeredArchitecture.Core.Entities;
+using Haskap.LayeredArchitecture.Core.Specifications;
 using Haskap.LayeredArchitecture.Utilities;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
@@ -68,5 +69,23 @@ namespace Haskap.LayeredArchitecture.Core.Repositories
         IList<TEntity> GetMany(Expression<Func<TEntity, bool>> where, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false);
         IList<TEntity> GetAll(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false);
         TEntity Get(Expression<Func<TEntity, bool>> where, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool disableTracking = false);
+
+
+        void Delete(ISpecification<TEntity, TId> specification, string includeProperties = "");
+        TEntity Get(ISpecification<TEntity, TId> specification, string includeProperties = "", bool disableTracking = false);
+        IList<TEntity> GetMany(ISpecification<TEntity, TId> specification, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false);
+        bool Exists(ISpecification<TEntity, TId> specification, string includeProperties = "");
+        Task<IList<TEntity>> GetManyAsync(ISpecification<TEntity, TId> specification, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false);
+        Task<PagedList<TEntity>> GetManyAsync(ISpecification<TEntity, TId> specification, int pageIndex, int pageSize, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false);
+        Task<int> CountAsync(ISpecification<TEntity, TId> specification, string includeProperties = "");
+        int Count(ISpecification<TEntity, TId> specification, string includeProperties = "");
+        int Count(ISpecification<TEntity, TId> specification, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null);
+        Task<int> CountAsync(ISpecification<TEntity, TId> specification, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null);
+        Task<PagedList<TEntity>> GetManyAsync(ISpecification<TEntity, TId> specification, int pageIndex, int pageSize, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false);
+        Task<IList<TEntity>> GetManyAsync(ISpecification<TEntity, TId> specification, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false);
+        bool Exists(ISpecification<TEntity, TId> specification, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null);
+        void Delete(ISpecification<TEntity, TId> specification, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null);
+        IList<TEntity> GetMany(ISpecification<TEntity, TId> specification, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false);
+        TEntity Get(ISpecification<TEntity, TId> specification, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool disableTracking = false);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Haskap.LayeredArchitecture.Core.Entities;
+using Haskap.LayeredArchitecture.Core.Specifications;
 using Haskap.LayeredArchitecture.Utilities;
 using System;
 using System.Collections.Generic;
@@ -32,5 +33,12 @@ namespace Haskap.LayeredArchitecture.Core.Repositories
         Task<PagedList<TEntity>> GetManyDeletedAsync(Expression<Func<TEntity, bool>> where, int pageIndex, int pageSize, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
         Task<IList<TEntity>> GetAllDeletedAsync(string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
         Task<PagedList<TEntity>> GetAllDeletedAsync(int pageIndex, int pageSize, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
+
+        void Drop(ISpecification<TEntity, TId> specification, string includeProperties = "");
+        void UnDelete(ISpecification<TEntity, TId> specification, string includeProperties = "");
+        TEntity GetDeleted(ISpecification<TEntity, TId> specification, string includeProperties = "");
+        IList<TEntity> GetManyDeleted(ISpecification<TEntity, TId> specification, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
+        Task<IList<TEntity>> GetManyDeletedAsync(ISpecification<TEntity, TId> specification, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
+        Task<PagedList<TEntity>> GetManyDeletedAsync(ISpecification<TEntity, TId> specification, int pageIndex, int pageSize, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
     }
 }
