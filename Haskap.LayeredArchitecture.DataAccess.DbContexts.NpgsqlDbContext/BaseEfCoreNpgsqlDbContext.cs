@@ -26,15 +26,15 @@ namespace Haskap.LayeredArchitecture.DataAccess.DbContexts.NpgsqlDbContext
                 foreach (var property in entityType.GetProperties())
                     property.SetColumnName(property.Name.ToSnakeCase(CaseOption.LowerCase));
 
-                foreach (var key in entityType.GetKeys())
-                    key.SetName(key.GetName().ToSnakeCase(CaseOption.LowerCase));
+                //foreach (var key in entityType.GetKeys())
+                //    key.SetName(key.GetName().ToSnakeCase(CaseOption.LowerCase));
 
-                foreach (var foreignKey in entityType.GetForeignKeys())
-                    foreignKey.PrincipalKey.SetName(foreignKey.PrincipalKey.GetName().ToSnakeCase(CaseOption.LowerCase));
-                //foreignKey.SetConstraintName(foreignKey.GetConstraintName().ToSnakeCase(CaseOption.LowerCase));
+                //foreach (var foreignKey in entityType.GetForeignKeys())
+                //    foreignKey.PrincipalKey.SetName(foreignKey.PrincipalKey.GetName().ToSnakeCase(CaseOption.LowerCase));
+                ////foreignKey.SetConstraintName(foreignKey.GetConstraintName().ToSnakeCase(CaseOption.LowerCase));
 
-                foreach (var index in entityType.GetIndexes())
-                    index.SetName(index.GetName().ToSnakeCase(CaseOption.LowerCase));
+                //foreach (var index in entityType.GetIndexes())
+                //    index.SetName(index.GetName().ToSnakeCase(CaseOption.LowerCase));
             }
 
             //builder.ApplyConfiguration(new MessageConfigurations());
