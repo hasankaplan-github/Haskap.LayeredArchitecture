@@ -35,13 +35,6 @@ namespace Haskap.LayeredArchitecture.Core.Repositories
         Task<IList<TEntity>> GetAllDeletedAsync(string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
         Task<PagedList<TEntity>> GetAllDeletedAsync(int pageIndex, int pageSize, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
 
-        void Drop(ISpecification<TEntity, TId> specification, string includeProperties = "");
-        void UnDelete(ISpecification<TEntity, TId> specification, string includeProperties = "");
-        TEntity GetDeleted(ISpecification<TEntity, TId> specification, string includeProperties = "");
-        IList<TEntity> GetManyDeleted(ISpecification<TEntity, TId> specification, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
-        Task<IList<TEntity>> GetManyDeletedAsync(ISpecification<TEntity, TId> specification, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
-        Task<PagedList<TEntity>> GetManyDeletedAsync(ISpecification<TEntity, TId> specification, int pageIndex, int pageSize, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
-
 
         void Drop(Expression<Func<TEntity, bool>> where, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null);
         TEntity GetDeleted(Expression<Func<TEntity, bool>> where, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null);
@@ -51,13 +44,5 @@ namespace Haskap.LayeredArchitecture.Core.Repositories
         Task<PagedList<TEntity>> GetManyDeletedAsync(Expression<Func<TEntity, bool>> where, int pageIndex, int pageSize, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
         Task<IList<TEntity>> GetAllDeletedAsync(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
         Task<PagedList<TEntity>> GetAllDeletedAsync(int pageIndex, int pageSize, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
-
-        void Drop(ISpecification<TEntity, TId> specification, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null);
-        void UnDelete(ISpecification<TEntity, TId> specification, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null);
-        TEntity GetDeleted(ISpecification<TEntity, TId> specification, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null);
-        IList<TEntity> GetManyDeleted(ISpecification<TEntity, TId> specification, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
-        Task<IList<TEntity>> GetManyDeletedAsync(ISpecification<TEntity, TId> specification, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
-        Task<PagedList<TEntity>> GetManyDeletedAsync(ISpecification<TEntity, TId> specification, int pageIndex, int pageSize, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
-
     }
 }
