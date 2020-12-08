@@ -18,5 +18,10 @@ namespace Haskap.LayeredArchitecture.Core.Specifications
         }
 
         public abstract Expression<Func<TEntity, bool>> ToExpression();
+
+        public static implicit operator Expression<Func<TEntity, bool>>(Specification<TEntity, TId> specification)
+        {
+            return specification.ToExpression();
+        }
     }
 }
