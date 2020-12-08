@@ -6,8 +6,7 @@ using System.Text;
 
 namespace Haskap.LayeredArchitecture.Core.Specifications
 {
-    public abstract class Specification<TEntity, TId>
-        where TEntity : BaseEntity<TId>
+    public abstract class Specification<TEntity>
     {
         private Func<TEntity, bool> predicateCache = null;
 
@@ -19,7 +18,7 @@ namespace Haskap.LayeredArchitecture.Core.Specifications
 
         public abstract Expression<Func<TEntity, bool>> ToExpression();
 
-        public static implicit operator Expression<Func<TEntity, bool>>(Specification<TEntity, TId> specification)
+        public static implicit operator Expression<Func<TEntity, bool>>(Specification<TEntity> specification)
         {
             return specification.ToExpression();
         }
