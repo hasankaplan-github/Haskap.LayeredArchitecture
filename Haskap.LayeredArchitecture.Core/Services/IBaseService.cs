@@ -5,9 +5,7 @@ using System.Text;
 
 namespace Haskap.LayeredArchitecture.Core.Services
 {
-    public interface IBaseService<TUnitOfWork>
-        where TUnitOfWork : IBaseUnitOfWork
+    public interface IBaseService
     {
-        TUnitOfWork UnitOfWork { get; set; }
     }
 }

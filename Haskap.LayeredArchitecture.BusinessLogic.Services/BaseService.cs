@@ -6,14 +6,7 @@ using System.Text;
 
 namespace Haskap.LayeredArchitecture.BusinessLogic.Services
 {
-    public class BaseService<TUnitOfWork> : IBaseService<TUnitOfWork>
-        where TUnitOfWork : IBaseUnitOfWork
+    public class BaseService : IBaseService
     {
-        public BaseService(TUnitOfWork unitOfWork)
-        {
-            UnitOfWork = unitOfWork;
-        }
-
-        public TUnitOfWork UnitOfWork { get; set; }
     }
 }
