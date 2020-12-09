@@ -25,6 +25,48 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
             this.dbSet = dbContext.Set<TEntity>();
         }
 
+        protected virtual IQueryable<TEntity> PrepareQuery(Expression<Func<TEntity, bool>> where = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        {
+            IQueryable<TEntity> query = this.dbSet;
+
+            if (disableTracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+            if (where != null)
+            {
+                query = query.Where(where);
+            }
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+
+            return query;
+        }
+
+        protected IQueryable<TEntity> AddInclude(IQueryable<TEntity> query, string include)
+        {
+            foreach (var includeProperty in include.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            return query;
+        }
+
+        protected IQueryable<TEntity> AddInclude(IQueryable<TEntity> query, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include)
+        {
+            if (include != null)
+            {
+                query = include(query);
+            }
+
+            return query;
+        }
+
         #region IRepository Members
 
         public virtual TEntity GetById(TId id)
@@ -32,130 +74,52 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
             return this.dbSet.Find(id);
         }
 
-        public virtual TEntity Get(Expression<Func<TEntity, bool>> where, string includeProperties = "", bool disableTracking = false)
+        public virtual TEntity Get(Expression<Func<TEntity, bool>> where, string include = "", bool disableTracking = false)
         {
-            IQueryable<TEntity> query = this.dbSet;
-
-            if (disableTracking)
-            {
-                query = query.AsNoTracking();
-            }
-
-            query = query.Where(where);
-
-            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeProperty);
-            }
+            var query = PrepareQuery(where, orderBy: null, disableTracking);
+            query = AddInclude(query, include);
 
             return query.SingleOrDefault();
         }
 
         public virtual TEntity Get(Expression<Func<TEntity, bool>> where, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool disableTracking = false)
         {
-            IQueryable<TEntity> query = this.dbSet;
-
-            if (disableTracking)
-            {
-                query = query.AsNoTracking();
-            }
-
-            query = query.Where(where);
-
-            if (include != null)
-            {
-                query = include(query);
-            }
+            var query = PrepareQuery(where, orderBy: null, disableTracking);
+            query = AddInclude(query, include);
 
             return query.SingleOrDefault();
         }
 
-        public virtual IList<TEntity> GetAll(string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        public virtual IList<TEntity> GetAll(string include = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            IQueryable<TEntity> query = this.dbSet;
+            var query = PrepareQuery(where: null, orderBy, disableTracking);
+            query = AddInclude(query, include);
 
-            if (disableTracking)
-            {
-                query = query.AsNoTracking();
-            }
-
-            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeProperty);
-            }
-
-            if (orderBy != null)
-            {
-                return orderBy(query).ToList();
-            }
             return query.ToList();
         }
 
         public virtual IList<TEntity> GetAll(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            IQueryable<TEntity> query = this.dbSet;
+            var query = PrepareQuery(where: null, orderBy, disableTracking);
+            query = AddInclude(query, include);
 
-            if (disableTracking)
-            {
-                query = query.AsNoTracking();
-            }
-
-            if (include != null)
-            {
-                query = include(query);
-            }
-
-            if (orderBy != null)
-            {
-                return orderBy(query).ToList();
-            }
             return query.ToList();
         }
 
 
-        public virtual IList<TEntity> GetMany(Expression<Func<TEntity, bool>> where, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        public virtual IList<TEntity> GetMany(Expression<Func<TEntity, bool>> where, string include = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            IQueryable<TEntity> query = this.dbSet;
+            var query = PrepareQuery(where: null, orderBy, disableTracking);
+            query = AddInclude(query, include);
 
-            if (disableTracking)
-            {
-                query = query.AsNoTracking();
-            }
-
-            query = query.Where(where);
-
-            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeProperty);
-            }
-
-            if (orderBy != null)
-            {
-                return orderBy(query).ToList();
-            }
             return query.ToList();
         }
 
         public virtual IList<TEntity> GetMany(Expression<Func<TEntity, bool>> where, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            IQueryable<TEntity> query = this.dbSet;
+            var query = PrepareQuery(where: null, orderBy, disableTracking);
+            query = AddInclude(query, include);
 
-            if (disableTracking)
-            {
-                query = query.AsNoTracking();
-            }
-
-            query = query.Where(where);
-
-            if (include != null)
-            {
-                query = include(query);
-            }
-
-            if (orderBy != null)
-            {
-                return orderBy(query).ToList();
-            }
             return query.ToList();
         }
 
@@ -216,9 +180,9 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
             }
         }
 
-        public virtual void Delete(Expression<Func<TEntity, bool>> where, string includeProperties = "")
+        public virtual void Delete(Expression<Func<TEntity, bool>> where, string include = "")
         {
-            var entities = GetMany(where, includeProperties);
+            var entities = GetMany(where, include);
             foreach (var entity in entities)
             {
                 Delete(entity);
@@ -279,34 +243,18 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
             return new PagedList<TEntity>(pagedItems.ToList(), totalItemCount, pageIndex, pageSize);
         }
 
-        public virtual bool Exists(Expression<Func<TEntity, bool>> predicate, string includeProperties = "")
+        public virtual bool Exists(Expression<Func<TEntity, bool>> predicate, string include = "")
         {
-            IQueryable<TEntity> query = this.dbSet;
-            //if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            //{
-            //    query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
-            //}
-
-            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeProperty);
-            }
+            var query = PrepareQuery(where: null, orderBy: null, disableTracking: false);
+            query = AddInclude(query, include);
 
             return query.Any(predicate);
         }
 
         public virtual bool Exists(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
         {
-            IQueryable<TEntity> query = this.dbSet;
-            //if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            //{
-            //    query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
-            //}
-
-            if (include != null)
-            {
-                query = include(query);
-            }
+            var query = PrepareQuery(where: null, orderBy: null, disableTracking: false);
+            query = AddInclude(query, include);
 
             return query.Any(predicate);
         }
@@ -327,242 +275,99 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
             return pagedList;
         }
 
-        public virtual async Task<PagedList<TEntity>> GetAllAsync(int pageIndex, int pageSize, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        public virtual async Task<PagedList<TEntity>> GetAllAsync(int pageIndex, int pageSize, string include = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            IQueryable<TEntity> query = this.dbSet;
-
-            if (disableTracking)
-            {
-                query = query.AsNoTracking();
-            }
-
-            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeProperty);
-            }
-
-            if (orderBy != null)
-            {
-                query = orderBy(query);
-            }
+            var query = PrepareQuery(where: null, orderBy, disableTracking);
+            query = AddInclude(query, include);
             var pagedList = await this.GetPagedListAsync(query, pageIndex, pageSize);
             return pagedList;
         }
 
         public virtual async Task<PagedList<TEntity>> GetAllAsync(int pageIndex, int pageSize, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            IQueryable<TEntity> query = this.dbSet;
+            var query = PrepareQuery(where: null, orderBy, disableTracking);
+            query = AddInclude(query, include);
 
-            if (disableTracking)
-            {
-                query = query.AsNoTracking();
-            }
-
-            if (include != null)
-            {
-                query = include(query);
-            }
-
-            if (orderBy != null)
-            {
-                query = orderBy(query);
-            }
             var pagedList = await this.GetPagedListAsync(query, pageIndex, pageSize);
             return pagedList;
         }
 
-        public virtual async Task<IList<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        public virtual async Task<IList<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where, string include = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            IQueryable<TEntity> query = this.dbSet;
+            var query = PrepareQuery(where, orderBy, disableTracking);
+            query = AddInclude(query, include);
 
-            if (disableTracking)
-            {
-                query = query.AsNoTracking();
-            }
-
-            query = query.Where(where);
-
-            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeProperty);
-            }
-
-            if (orderBy != null)
-            {
-                return await orderBy(query).ToListAsync();
-            }
             return await query.ToListAsync();
         }
 
         public virtual async Task<IList<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            IQueryable<TEntity> query = this.dbSet;
+            var query = PrepareQuery(where: null, orderBy, disableTracking);
+            query = AddInclude(query, include);
 
-            if (disableTracking)
-            {
-                query = query.AsNoTracking();
-            }
-
-            query = query.Where(where);
-
-            if (include != null)
-            {
-                query = include(query);
-            }
-
-            if (orderBy != null)
-            {
-                return await orderBy(query).ToListAsync();
-            }
             return await query.ToListAsync();
         }
 
-        public virtual async Task<PagedList<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where, int pageIndex, int pageSize, string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        public virtual async Task<PagedList<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where, int pageIndex, int pageSize, string include = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            IQueryable<TEntity> query = this.dbSet;
+            var query = PrepareQuery(where, orderBy, disableTracking);
+            query = AddInclude(query, include);
 
-            if (disableTracking)
-            {
-                query = query.AsNoTracking();
-            }
-
-            query = query.Where(where);
-
-            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeProperty);
-            }
-
-            if (orderBy != null)
-            {
-                query = orderBy(query);
-            }
             return await this.GetPagedListAsync(query, pageIndex, pageSize);
         }
 
         public virtual async Task<PagedList<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where, int pageIndex, int pageSize, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            IQueryable<TEntity> query = this.dbSet;
+            var query = PrepareQuery(where, orderBy, disableTracking);
+            query = AddInclude(query, include);
 
-            if (disableTracking)
-            {
-                query = query.AsNoTracking();
-            }
-
-            query = query.Where(where);
-
-            if (include != null)
-            {
-                query = include(query);
-            }
-
-            if (orderBy != null)
-            {
-                query = orderBy(query);
-            }
             return await this.GetPagedListAsync(query, pageIndex, pageSize);
         }
 
-        public virtual async Task<IList<TEntity>> GetAllAsync(string includeProperties = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        public virtual async Task<IList<TEntity>> GetAllAsync(string include = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            IQueryable<TEntity> query = this.dbSet;
+            var query = PrepareQuery(where: null, orderBy, disableTracking);
+            query = AddInclude(query, include);
 
-            if (disableTracking)
-            {
-                query = query.AsNoTracking();
-            }
-
-            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeProperty);
-            }
-
-            if (orderBy != null)
-            {
-                query = orderBy(query);
-            }
             return await query.ToListAsync();
         }
 
         public virtual async Task<IList<TEntity>> GetAllAsync(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            IQueryable<TEntity> query = this.dbSet;
+            var query = PrepareQuery(where: null, orderBy, disableTracking);
+            query = AddInclude(query, include);
 
-            if (disableTracking)
-            {
-                query = query.AsNoTracking();
-            }
-
-            if (include != null)
-            {
-                query = include(query);
-            }
-
-            if (orderBy != null)
-            {
-                query = orderBy(query);
-            }
             return await query.ToListAsync();
         }
 
-        public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate, string includeProperties = "")
+        public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate, string include = "")
         {
-            IQueryable<TEntity> query = this.dbSet;
-            //if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            //{
-            //    query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
-            //}
-            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeProperty);
-            }
+            var query = PrepareQuery(where: null, orderBy: null, disableTracking: false);
+            query = AddInclude(query, include);
 
             return await query.CountAsync(predicate);
         }
 
         public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
         {
-            IQueryable<TEntity> query = this.dbSet;
-            //if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            //{
-            //    query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
-            //}
-
-            if (include != null)
-            {
-                query = include(query);
-            }
+            var query = PrepareQuery(where: null, orderBy: null, disableTracking: false);
+            query = AddInclude(query, include);
 
             return await query.CountAsync(predicate);
         }
 
-        public virtual int Count(Expression<Func<TEntity, bool>> predicate, string includeProperties = "")
+        public virtual int Count(Expression<Func<TEntity, bool>> predicate, string include = "")
         {
-            IQueryable<TEntity> query = this.dbSet;
-            //if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            //{
-            //    query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
-            //}
-            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeProperty);
-            }
+            var query = PrepareQuery(where: null, orderBy: null, disableTracking: false);
+            query = AddInclude(query, include);
 
             return query.Count(predicate);
         }
 
         public virtual int Count(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
         {
-            IQueryable<TEntity> query = this.dbSet;
-            //if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
-            //{
-            //    query = query.Where(e => (e as ISoftDeletable).IsDeleted == false);
-            //}
-
-            if (include != null)
-            {
-                query = include(query);
-            }
+            var query = PrepareQuery(where: null, orderBy: null, disableTracking: false);
+            query = AddInclude(query, include);
 
             return query.Count(predicate);
         }
