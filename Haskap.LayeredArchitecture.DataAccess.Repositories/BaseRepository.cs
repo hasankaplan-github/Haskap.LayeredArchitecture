@@ -16,18 +16,18 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
         where TEntity : BaseEntity<TId>
         where TDbContext : Microsoft.EntityFrameworkCore.DbContext
     {
-        protected readonly TDbContext dbContext;
-        protected readonly DbSet<TEntity> dbSet;
+        protected readonly TDbContext DbContext;
+        protected readonly DbSet<TEntity> DbSet;
 
         public BaseRepository(TDbContext dbContext)
         {
-            this.dbContext = dbContext ?? throw new ArgumentNullException("dbContext can not be null.");
-            this.dbSet = dbContext.Set<TEntity>();
+            this.DbContext = dbContext ?? throw new ArgumentNullException("dbContext can not be null.");
+            this.DbSet = dbContext.Set<TEntity>();
         }
 
         protected virtual IQueryable<TEntity> PrepareQuery(Expression<Func<TEntity, bool>> where = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            IQueryable<TEntity> query = this.dbSet;
+            IQueryable<TEntity> query = this.DbSet;
 
             if (disableTracking)
             {
@@ -71,7 +71,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual TEntity GetById(TId id)
         {
-            return this.dbSet.IgnoreQueryFilters().SingleOrDefault(x => x.Id.Equals(id));
+            return this.DbSet.IgnoreQueryFilters().SingleOrDefault(x => x.Id.Equals(id));
         }
 
         public virtual TEntity Get(Expression<Func<TEntity, bool>> where, string include = "", bool disableTracking = false)
@@ -128,7 +128,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
         public virtual void Add(TEntity entity)
         {
             //entity.Id = Guid.NewGuid();
-            this.dbSet.Add(entity);
+            this.DbSet.Add(entity);
         }
 
         public virtual void Update(TEntity entity)
@@ -140,7 +140,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
             //}
             //this.dbSet.Attach(entity);
             //this.dbContext.Entry(entity).State = EntityState.Modified;
-            this.dbSet.Update(entity);
+            this.DbSet.Update(entity);
         }
 
         public virtual void UpdateRange(params TEntity[] entities)
@@ -152,12 +152,12 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
             //}
             //this.dbSet.Attach(entity);
             //this.dbContext.Entry(entity).State = EntityState.Modified;
-            this.dbSet.UpdateRange(entities);
+            this.DbSet.UpdateRange(entities);
         }
 
         public virtual void UpdateRange(IEnumerable<TEntity> entities)
         {
-            this.dbSet.UpdateRange(entities);
+            this.DbSet.UpdateRange(entities);
         }
 
 
@@ -167,7 +167,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
             //{
             //    this.dbSet.Attach(entity);
             //}
-            this.dbSet.Remove(entity);
+            this.DbSet.Remove(entity);
         }
 
         public virtual void Delete(TId id)
@@ -200,12 +200,12 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual void DeleteRange(params TEntity[] entities)
         {
-            this.dbSet.RemoveRange(entities);
+            this.DbSet.RemoveRange(entities);
         }
 
         public virtual void DeleteRange(IEnumerable<TEntity> entities)
         {
-            this.dbSet.RemoveRange(entities);
+            this.DbSet.RemoveRange(entities);
         }
 
 
@@ -261,12 +261,12 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual IList<TEntity> FromSql(FormattableString sqlString)
         {
-            return this.dbSet.FromSqlInterpolated(sqlString).ToList();
+            return this.DbSet.FromSqlInterpolated(sqlString).ToList();
         }
 
         public virtual async Task<PagedList<TEntity>> FromSqlAsync(FormattableString sqlString, int pageIndex, int pageSize, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy)
         {
-            var source = this.dbSet.FromSqlInterpolated(sqlString);
+            var source = this.DbSet.FromSqlInterpolated(sqlString);
             if (orderBy != null)
             {
                 source = orderBy(source);
