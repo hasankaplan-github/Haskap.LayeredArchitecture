@@ -71,7 +71,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual TEntity GetById(TId id)
         {
-            return this.dbSet.Find(id);
+            return this.dbSet.IgnoreQueryFilters().SingleOrDefault(x => x.Id.Equals(id));
         }
 
         public virtual TEntity Get(Expression<Func<TEntity, bool>> where, string include = "", bool disableTracking = false)
