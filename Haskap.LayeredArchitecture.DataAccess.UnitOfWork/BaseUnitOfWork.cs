@@ -13,11 +13,11 @@ namespace Haskap.LayeredArchitecture.DataAccess.UnitOfWork
     public class BaseUnitOfWork<TDbContext> : IBaseUnitOfWork
       where TDbContext : DbContext
     {
-        protected readonly TDbContext dbContext;
+        protected readonly TDbContext DbContext;
 
         public BaseUnitOfWork(TDbContext dbContext)
         {
-            this.dbContext = dbContext ?? throw new ArgumentNullException("dbContext can not be null.");
+            this.DbContext = dbContext ?? throw new ArgumentNullException("dbContext can not be null.");
         }
 
 
@@ -27,30 +27,30 @@ namespace Haskap.LayeredArchitecture.DataAccess.UnitOfWork
         { 
             get
             {
-                return this.dbContext.Database.CurrentTransaction;
+                return this.DbContext.Database.CurrentTransaction;
             }
         }
 
         public virtual IDbContextTransaction BeginTransaction()
         {
-            return this.dbContext.Database.BeginTransaction();
+            return this.DbContext.Database.BeginTransaction();
         }
 
         public virtual void CommitTransaction()
         {
-            this.dbContext.Database.CommitTransaction();
+            this.DbContext.Database.CommitTransaction();
         }
 
         public virtual void RollbackTransaction()
         {
-            this.dbContext.Database.RollbackTransaction();
+            this.DbContext.Database.RollbackTransaction();
         }
 
         public virtual int SaveChanges()
         {
             try
             {
-                int retVal = this.dbContext.SaveChanges();
+                int retVal = this.DbContext.SaveChanges();
                 return retVal;
             }
             catch (Exception ex)
@@ -64,7 +64,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.UnitOfWork
         {
             try
             {
-                var retVal = await this.dbContext.SaveChangesAsync(cancellationToken);
+                var retVal = await this.DbContext.SaveChangesAsync(cancellationToken);
                 return retVal;
             }
             catch (Exception ex)
@@ -85,7 +85,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.UnitOfWork
             {
                 if (disposing)
                 {
-                    dbContext.Dispose();
+                    DbContext.Dispose();
                 }
             }
 
