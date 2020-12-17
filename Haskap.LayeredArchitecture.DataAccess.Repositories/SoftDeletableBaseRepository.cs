@@ -22,15 +22,15 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         }
 
-        protected override IQueryable<TEntity> PrepareQuery(Expression<Func<TEntity, bool>> where = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        protected override IQueryable<TEntity> PrepareQuery(Expression<Func<TEntity, bool>> where = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, Expression<Func<TEntity, bool>> whilePredicate = null, bool disableTracking = false)
         {
-            var query = base.PrepareQuery(where, orderBy, disableTracking);
+            var query = base.PrepareQuery(where, orderBy, whilePredicate, disableTracking);
             return query.IgnoreQueryFilters().Where(e => e.IsDeleted == true);
         }
 
         public virtual TEntity GetDeleted(Expression<Func<TEntity, bool>> where, string include = "", bool disableTracking = false)
         {
-            var query = PrepareQuery(where, orderBy: null, disableTracking);
+            var query = PrepareQuery(where, orderBy: null, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
 
             return query.SingleOrDefault();
@@ -38,42 +38,42 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual IList<TEntity> GetAllDeleted(string include = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where: null, orderBy, disableTracking);
+            var query = PrepareQuery(where: null, orderBy, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
             return query.ToList();
         }
 
         public virtual IList<TEntity> GetManyDeleted(Expression<Func<TEntity, bool>> where, string include = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where, orderBy, disableTracking);
+            var query = PrepareQuery(where, orderBy, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
             return query.ToList();
         }
 
         public virtual async Task<IList<TEntity>> GetManyDeletedAsync(Expression<Func<TEntity, bool>> where, string include = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where, orderBy, disableTracking);
+            var query = PrepareQuery(where, orderBy, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
             return await query.ToListAsync();
         }
 
         public virtual async Task<PagedList<TEntity>> GetManyDeletedAsync(Expression<Func<TEntity, bool>> where, int pageIndex, int pageSize, string include = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where, orderBy, disableTracking);
+            var query = PrepareQuery(where, orderBy, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
             return await GetPagedListAsync(query, pageIndex, pageSize);
         }
 
         public virtual async Task<IList<TEntity>> GetAllDeletedAsync(string include = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where: null, orderBy, disableTracking);
+            var query = PrepareQuery(where: null, orderBy, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
             return await query.ToListAsync();
         }
 
         public virtual async Task<PagedList<TEntity>> GetAllDeletedAsync(int pageIndex, int pageSize, string include = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where: null, orderBy, disableTracking);
+            var query = PrepareQuery(where: null, orderBy, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
             return await GetPagedListAsync(query, pageIndex, pageSize);
         }
@@ -241,7 +241,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual TEntity GetDeleted(Expression<Func<TEntity, bool>> where, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where, orderBy: null, disableTracking);
+            var query = PrepareQuery(where, orderBy: null, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
 
             return query.SingleOrDefault();
@@ -249,42 +249,42 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual IList<TEntity> GetManyDeleted(Expression<Func<TEntity, bool>> where, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where, orderBy: null, disableTracking);
+            var query = PrepareQuery(where, orderBy: null, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
             return query.ToList();
         }
 
         public virtual IList<TEntity> GetAllDeleted(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where: null, orderBy, disableTracking);
+            var query = PrepareQuery(where: null, orderBy, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
             return query.ToList();
         }
 
         public virtual async Task<IList<TEntity>> GetManyDeletedAsync(Expression<Func<TEntity, bool>> where, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where, orderBy, disableTracking);
+            var query = PrepareQuery(where, orderBy, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
             return await query.ToListAsync();
         }
 
         public virtual async Task<PagedList<TEntity>> GetManyDeletedAsync(Expression<Func<TEntity, bool>> where, int pageIndex, int pageSize, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where, orderBy, disableTracking);
+            var query = PrepareQuery(where, orderBy, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
             return await GetPagedListAsync(query, pageIndex, pageSize);
         }
 
         public virtual async Task<IList<TEntity>> GetAllDeletedAsync(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where: null, orderBy, disableTracking);
+            var query = PrepareQuery(where: null, orderBy, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
             return await query.ToListAsync();
         }
 
         public virtual async Task<PagedList<TEntity>> GetAllDeletedAsync(int pageIndex, int pageSize, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where: null, orderBy, disableTracking);
+            var query = PrepareQuery(where: null, orderBy, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
             return await GetPagedListAsync(query, pageIndex, pageSize);
         }

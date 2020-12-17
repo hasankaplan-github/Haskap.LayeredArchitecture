@@ -26,26 +26,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
             this.DbSet = dbContext.Set<TEntity>();
         }
 
-        protected virtual IQueryable<TEntity> PrepareTakeWhileQuery(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
-        {
-            IQueryable<TEntity> query = this.DbSet;
-
-            if (disableTracking)
-            {
-                query = query.AsNoTracking();
-            }
-
-            if (orderBy != null)
-            {
-                query = orderBy(query);
-            }
-
-            query = query.TakeWhile(predicate);
-
-            return query;
-        }
-
-        protected virtual IQueryable<TEntity> PrepareQuery(Expression<Func<TEntity, bool>> where = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        protected virtual IQueryable<TEntity> PrepareQuery(Expression<Func<TEntity, bool>> where = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, Expression<Func<TEntity, bool>> whilePredicate = null, bool disableTracking = false)
         {
             IQueryable<TEntity> query = this.DbSet;
 
@@ -62,6 +43,11 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
             if (orderBy != null)
             {
                 query = orderBy(query);
+            }
+
+            if (whilePredicate != null)
+            {
+                query = query.TakeWhile(whilePredicate);
             }
 
             return query;
@@ -96,7 +82,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual TEntity Get(Expression<Func<TEntity, bool>> where, string include = "", bool disableTracking = false)
         {
-            var query = PrepareQuery(where, orderBy: null, disableTracking);
+            var query = PrepareQuery(where, orderBy: null, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
 
             return query.SingleOrDefault();
@@ -104,7 +90,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual TEntity Get(Expression<Func<TEntity, bool>> where, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where, orderBy: null, disableTracking);
+            var query = PrepareQuery(where, orderBy: null, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
 
             return query.SingleOrDefault();
@@ -112,7 +98,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual IList<TEntity> GetAll(string include = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where: null, orderBy, disableTracking);
+            var query = PrepareQuery(where: null, orderBy, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
 
             return query.ToList();
@@ -120,7 +106,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual IList<TEntity> GetAll(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where: null, orderBy, disableTracking);
+            var query = PrepareQuery(where: null, orderBy, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
 
             return query.ToList();
@@ -129,7 +115,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual IList<TEntity> GetMany(Expression<Func<TEntity, bool>> where, string include = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where, orderBy, disableTracking);
+            var query = PrepareQuery(where, orderBy, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
 
             return query.ToList();
@@ -137,7 +123,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual IList<TEntity> GetMany(Expression<Func<TEntity, bool>> where, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where, orderBy, disableTracking);
+            var query = PrepareQuery(where, orderBy, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
 
             return query.ToList();
@@ -265,7 +251,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual bool Exists(Expression<Func<TEntity, bool>> predicate, string include = "")
         {
-            var query = PrepareQuery(where: null, orderBy: null, disableTracking: false);
+            var query = PrepareQuery(where: null, orderBy: null, whilePredicate: null, disableTracking: false);
             query = AddInclude(query, include);
 
             return query.Any(predicate);
@@ -273,7 +259,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual bool Exists(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
         {
-            var query = PrepareQuery(where: null, orderBy: null, disableTracking: false);
+            var query = PrepareQuery(where: null, orderBy: null, whilePredicate: null, disableTracking: false);
             query = AddInclude(query, include);
 
             return query.Any(predicate);
@@ -297,7 +283,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual async Task<PagedList<TEntity>> GetAllAsync(int pageIndex, int pageSize, string include = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where: null, orderBy, disableTracking);
+            var query = PrepareQuery(where: null, orderBy, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
             var pagedList = await this.GetPagedListAsync(query, pageIndex, pageSize);
             return pagedList;
@@ -305,7 +291,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual async Task<PagedList<TEntity>> GetAllAsync(int pageIndex, int pageSize, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where: null, orderBy, disableTracking);
+            var query = PrepareQuery(where: null, orderBy, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
 
             var pagedList = await this.GetPagedListAsync(query, pageIndex, pageSize);
@@ -314,7 +300,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual async Task<IList<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where, string include = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where, orderBy, disableTracking);
+            var query = PrepareQuery(where, orderBy, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
 
             return await query.ToListAsync();
@@ -322,7 +308,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual async Task<IList<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where, orderBy, disableTracking);
+            var query = PrepareQuery(where, orderBy, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
 
             return await query.ToListAsync();
@@ -330,7 +316,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual async Task<PagedList<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where, int pageIndex, int pageSize, string include = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where, orderBy, disableTracking);
+            var query = PrepareQuery(where, orderBy, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
 
             return await this.GetPagedListAsync(query, pageIndex, pageSize);
@@ -338,7 +324,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual async Task<PagedList<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where, int pageIndex, int pageSize, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where, orderBy, disableTracking);
+            var query = PrepareQuery(where, orderBy, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
 
             return await this.GetPagedListAsync(query, pageIndex, pageSize);
@@ -346,7 +332,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual async Task<IList<TEntity>> GetAllAsync(string include = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where: null, orderBy, disableTracking);
+            var query = PrepareQuery(where: null, orderBy, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
 
             return await query.ToListAsync();
@@ -354,7 +340,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual async Task<IList<TEntity>> GetAllAsync(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareQuery(where: null, orderBy, disableTracking);
+            var query = PrepareQuery(where: null, orderBy, whilePredicate: null, disableTracking);
             query = AddInclude(query, include);
 
             return await query.ToListAsync();
@@ -362,7 +348,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate, string include = "")
         {
-            var query = PrepareQuery(where: null, orderBy: null, disableTracking: false);
+            var query = PrepareQuery(where: null, orderBy: null, whilePredicate: null, disableTracking: false);
             query = AddInclude(query, include);
 
             return await query.CountAsync(predicate);
@@ -370,7 +356,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
         {
-            var query = PrepareQuery(where: null, orderBy: null, disableTracking: false);
+            var query = PrepareQuery(where: null, orderBy: null, whilePredicate: null, disableTracking: false);
             query = AddInclude(query, include);
 
             return await query.CountAsync(predicate);
@@ -378,7 +364,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual int Count(Expression<Func<TEntity, bool>> predicate, string include = "")
         {
-            var query = PrepareQuery(where: null, orderBy: null, disableTracking: false);
+            var query = PrepareQuery(where: null, orderBy: null, whilePredicate: null, disableTracking: false);
             query = AddInclude(query, include);
 
             return query.Count(predicate);
@@ -386,7 +372,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual int Count(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
         {
-            var query = PrepareQuery(where: null, orderBy: null, disableTracking: false);
+            var query = PrepareQuery(where: null, orderBy: null, whilePredicate: null, disableTracking: false);
             query = AddInclude(query, include);
 
             return query.Count(predicate);
@@ -400,7 +386,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate, string include = "", CancellationToken cancellationToken = default)
         {
-            var query = PrepareQuery(where: null, orderBy: null, disableTracking: false);
+            var query = PrepareQuery(where: null, orderBy: null, whilePredicate: null, disableTracking: false);
             query = AddInclude(query, include);
 
             return query.AnyAsync(predicate, cancellationToken);
@@ -408,7 +394,7 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
         public virtual Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, CancellationToken cancellationToken = default)
         {
-            var query = PrepareQuery(where: null, orderBy: null, disableTracking: false);
+            var query = PrepareQuery(where: null, orderBy: null, whilePredicate: null, disableTracking: false);
             query = AddInclude(query, include);
 
             return query.AnyAsync(predicate, cancellationToken);
@@ -417,33 +403,33 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
 
 
-        public virtual IList<TEntity> GetManyWhile(Expression<Func<TEntity, bool>> predicate, string include = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        public virtual IList<TEntity> GetManyWhile(Expression<Func<TEntity, bool>> whilePredicate, Expression<Func<TEntity, bool>> where = null, string include = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareTakeWhileQuery(predicate, orderBy, disableTracking);
+            var query = PrepareQuery(where, orderBy, whilePredicate, disableTracking);
             query = AddInclude(query, include);
 
             return query.ToList();
         }
 
-        public virtual IList<TEntity> GetManyWhile(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        public virtual IList<TEntity> GetManyWhile(Expression<Func<TEntity, bool>> whilePredicate, Expression<Func<TEntity, bool>> where = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareTakeWhileQuery(predicate, orderBy, disableTracking);
+            var query = PrepareQuery(where, orderBy, whilePredicate, disableTracking);
             query = AddInclude(query, include);
 
             return query.ToList();
         }
 
-        public async virtual Task<IList<TEntity>> GetManyWhileAsync(Expression<Func<TEntity, bool>> predicate, string include = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        public async virtual Task<IList<TEntity>> GetManyWhileAsync(Expression<Func<TEntity, bool>> whilePredicate, Expression<Func<TEntity, bool>> where = null, string include = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareTakeWhileQuery(predicate, orderBy, disableTracking);
+            var query = PrepareQuery(where, orderBy, whilePredicate, disableTracking);
             query = AddInclude(query, include);
 
             return await query.ToListAsync();
         }
 
-        public async virtual Task<IList<TEntity>> GetManyWhileAsync(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        public async virtual Task<IList<TEntity>> GetManyWhileAsync(Expression<Func<TEntity, bool>> whilePredicate, Expression<Func<TEntity, bool>> where = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
-            var query = PrepareTakeWhileQuery(predicate, orderBy, disableTracking);
+            var query = PrepareQuery(where, orderBy, whilePredicate, disableTracking);
             query = AddInclude(query, include);
 
             return await query.ToListAsync();
