@@ -26,6 +26,25 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
             this.DbSet = dbContext.Set<TEntity>();
         }
 
+        protected virtual IQueryable<TEntity> PrepareTakeWhileQuery(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        {
+            IQueryable<TEntity> query = this.DbSet;
+
+            if (disableTracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+
+            query = query.TakeWhile(predicate);
+
+            return query;
+        }
+
         protected virtual IQueryable<TEntity> PrepareQuery(Expression<Func<TEntity, bool>> where = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
         {
             IQueryable<TEntity> query = this.DbSet;
@@ -393,6 +412,41 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
             query = AddInclude(query, include);
 
             return query.AnyAsync(predicate, cancellationToken);
+        }
+
+
+
+
+        public virtual IList<TEntity> GetManyWhile(Expression<Func<TEntity, bool>> predicate, string include = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        {
+            var query = PrepareTakeWhileQuery(predicate, orderBy, disableTracking);
+            query = AddInclude(query, include);
+
+            return query.ToList();
+        }
+
+        public virtual IList<TEntity> GetManyWhile(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        {
+            var query = PrepareTakeWhileQuery(predicate, orderBy, disableTracking);
+            query = AddInclude(query, include);
+
+            return query.ToList();
+        }
+
+        public async virtual Task<IList<TEntity>> GetManyWhileAsync(Expression<Func<TEntity, bool>> predicate, string include = "", Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        {
+            var query = PrepareTakeWhileQuery(predicate, orderBy, disableTracking);
+            query = AddInclude(query, include);
+
+            return await query.ToListAsync();
+        }
+
+        public async virtual Task<IList<TEntity>> GetManyWhileAsync(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool disableTracking = false)
+        {
+            var query = PrepareTakeWhileQuery(predicate, orderBy, disableTracking);
+            query = AddInclude(query, include);
+
+            return await query.ToListAsync();
         }
 
 
