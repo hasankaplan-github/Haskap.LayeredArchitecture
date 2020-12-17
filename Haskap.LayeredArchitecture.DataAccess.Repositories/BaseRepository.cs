@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Haskap.LayeredArchitecture.DataAccess.Repositories
@@ -371,6 +372,29 @@ namespace Haskap.LayeredArchitecture.DataAccess.Repositories
 
             return query.Count(predicate);
         }
+
+        public virtual Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
+        {
+            this.DbSet.AddAsync(entity, cancellationToken);
+            return Task.CompletedTask;
+        }
+
+        public virtual Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate, string include = "", CancellationToken cancellationToken = default)
+        {
+            var query = PrepareQuery(where: null, orderBy: null, disableTracking: false);
+            query = AddInclude(query, include);
+
+            return query.AnyAsync(predicate, cancellationToken);
+        }
+
+        public virtual Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, CancellationToken cancellationToken = default)
+        {
+            var query = PrepareQuery(where: null, orderBy: null, disableTracking: false);
+            query = AddInclude(query, include);
+
+            return query.AnyAsync(predicate, cancellationToken);
+        }
+
 
         #endregion
     }
